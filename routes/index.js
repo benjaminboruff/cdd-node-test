@@ -1,13 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var nIdx = Math.floor((Math.random() * names.length));
-var aIdx = Math.floor((Math.random() * adj.length));
-var myName = adj[nIdx] + names[nIdx];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Hi I am '+myName});
+  res.render('index', { title: 'Hi I am '+myName+'! My Public IP is '+res.locals.myPublicIp});
 });
 
 module.exports = router;
@@ -593,3 +590,7 @@ module.exports = router;
 		// Ada Yonath - an Israeli crystallographer, the first woman from the Middle East to win a Nobel prize in the sciences. https://en.wikipedia.org/wiki/Ada_Yonath
 		"yonath"
 	];
+
+var nIdx = Math.floor((Math.random() * names.length));
+var aIdx = Math.floor((Math.random() * adj.length));
+var myName = adj[aIdx] + ' ' + names[nIdx];

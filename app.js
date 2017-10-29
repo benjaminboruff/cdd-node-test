@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var publicIp = require('public-ip');
+var myPublicIp;
 
 var index = require('./routes/index');
 
@@ -20,6 +22,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function(req, res, next) {
+
+  res.locals.myPublicIp = myPublicIp || '(Public IP has not been found)';
+
+  if (!myPublicIp){
+  	getPublicIp();
+  }
+
+  next();
+});
 
 app.use('/', index);
 
@@ -40,5 +53,17 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+function getPublicIp(){
+
+	publicIp.v4().then(ip => {
+      console.log(ip);
+	    myPublicIp = ip; 
+	});
+
+}
+
+getPublicIp();		
 
 module.exports = app;
