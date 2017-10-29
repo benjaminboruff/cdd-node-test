@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Hi I am '+myName+'! My Public IP is '+res.locals.myPublicIp});
+  res.render('index', { title: 'Hi I am '+myName+'! My Public IP is '+res.locals.myPublicIp+'. ENV.custom_key='+process.env.custom_key});
 });
 
 module.exports = router;
