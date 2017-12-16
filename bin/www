@@ -27,7 +27,7 @@ var options = {
   */
 
 var unsecure_port = normalizePort(process.env.PORT || '3000');
-var secure_port = normalizePort(process.env.PORT || '8443');
+var secure_port = normalizePort('443');
 
 
 httpApp.set('port', unsecure_port);
