@@ -3,12 +3,15 @@
 /**
  * Module dependencies.
  */
-
+var express = require('express');
 var app = require('../app');
 var debug = require('debug')('node:server');
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
+
+// http front
+httpApp = express()
 
 var options = {
   key: fs.readFileSync('/opt/certs/example.com.key'),
@@ -19,27 +22,41 @@ var options = {
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+ /**
+  * Create HTTP server.
+  */
+
+var unsecure_port = normalizePort(process.env.PORT || '3000');
+var secure_port = normalizePort(process.env.PORT || '8443');
+
+
+httpApp.set('port', unsecure_port);
+httpApp.get("*", function (req, res, next) {
+  var hostname = ( req.headers.host.match(/:/g) ) ? req.headers.host.slice( 0, req.headers.host.indexOf(":") ) : req.headers.host
+  console.log(("The hostname is: " + hostname));
+  res.redirect("https://" + hostname + ":" + secure_port + req.path);
+});
+var server = http.createServer(httpApp);
+server.listen(unsecure_port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
- * Create HTTP server.
+ * Create HTTPS server.
  */
 
-var server = http.createServer(app);
-
-var secureServer = https.createServer(options, function (req, res) {
-                    res.writeHead(200);
-                    res.end("Welcome to Node.js HTTPS Server");
-                  }).listen(8443);
+app.set('port', secure_port);
+var secureServer = https.createServer(options, app);
+secureServer.listen(secure_port);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+// server.listen(unsecure_port);
+// secureServer.listen(secure_port);
+// server.on('error', onError);
+// server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
