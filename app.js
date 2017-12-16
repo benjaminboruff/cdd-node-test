@@ -10,6 +10,9 @@ var myPublicIp;
 var index = require('./routes/index');
 
 var app = express();
+var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
+
+app.use(redirectToHTTPS([/localhost:(\d{4})/]));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
