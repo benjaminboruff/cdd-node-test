@@ -10,7 +10,7 @@ var myPublicIp;
 var index = require('./routes/index');
 
 var app = express();
-var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
+//var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +35,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(redirectToHTTPS([/localhost:(\d{4})/]));
+//app.use(redirectToHTTPS([/localhost:(\d{4})/]));
 app.use('/', index);
 
 // catch 404 and forward to error handler
