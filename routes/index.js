@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 
-router.use(redirectToHTTPS([/localhost:(\d{4})/]));
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Hi I am '+myName+'! My Public IP is '+res.locals.myPublicIp+'. ENV.custom_key='+process.env.custom_key});
